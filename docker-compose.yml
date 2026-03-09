@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  bingo:
+    build: .
+    ports:
+      - "3000:3000"       # HTTP + WebSocket
+      - "8001:8001/udp"   # OSC (UDP!)
+    volumes:
+      - bingo-data:/app/data
+    environment:
+      - PORT=3000
+      - OSC_PORT=8001
+      - OSC_INTERFACE=0.0.0.0
+      - DATA_DIR=/app/data
+    restart: unless-stopped
+
+volumes:
+  bingo-data:

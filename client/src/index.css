@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brb-bg: #0a0a0f;
+  --brb-surface: #12121a;
+  --brb-red: #e63946;
+  --brb-red-glow: #ff1a2d;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  background-color: var(--brb-bg);
+  color: #e8e8ef;
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar styling for dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #12121a;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2a3a;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3a3a50;
+}
+
+/* Scanline overlay for show-control aesthetic */
+.scanline-overlay {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+  z-index: 9999;
+}
+
+/* Number cell glow effect */
+.number-glow {
+  box-shadow: 
+    0 0 12px rgba(230, 57, 70, 0.4),
+    0 0 30px rgba(230, 57, 70, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.number-glow-intense {
+  box-shadow: 
+    0 0 20px rgba(230, 57, 70, 0.6),
+    0 0 50px rgba(230, 57, 70, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Status indicator pulse */
+@keyframes status-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.status-pulse {
+  animation: status-pulse 2s ease-in-out infinite;
+}
