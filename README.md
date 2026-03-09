@@ -31,6 +31,19 @@ Open **http://localhost:3000** in your browser.
 
 ---
 
+## Quick Start (New Machine)
+
+```bash
+git clone https://github.com/TwistedMelonIO/Big-Red-Button-Bingo.git
+cd Big-Red-Button-Bingo
+cp .env.example .env   # set QLAB_HOST to your QLab machine's IP
+cd server && npm install && cd ../client && npm install && cd ..
+```
+
+Then follow the dev or production steps below.
+
+---
+
 ## Quick Start (Development)
 
 ### Prerequisites
@@ -118,8 +131,16 @@ cd ../server && npm run build && npm start
 | Direction | Address | Arguments | Description |
 |-----------|---------|-----------|-------------|
 | QLab → Server | `/brbingo/number` | `int32` (1–90) | Call a bingo number |
-| Server → QLab (future) | `/brbingo/ack` | `int32`, `string` | Acknowledge a number |
-| Server → QLab (future) | `/brbingo/error` | `string` | Validation error |
+| Server → QLab | `/cue/0/text` | `string` | Current number (most recently called) |
+| Server → QLab | `/cue/1/text` – `/cue/10/text` | `string` | Previous 10 numbers (history) |
+
+> On every number call, the server sends up to 11 OSC messages to QLab updating text cues 0–10. On session reset, all 11 cues are blanked with empty strings. Only slots with values are sent (e.g. if only 3 numbers have been called, only `/cue/0`, `/cue/1`, `/cue/2` are sent).
+
+### Setting up the QLab scoreboard
+
+1. Create 11 **Text cues** in your QLab workspace, numbered **0** through **10**.
+2. Set `QLAB_HOST` in your `.env` to the IP of the Mac running QLab.
+3. `QLAB_OSC_PORT` defaults to `53000` (QLab's standard OSC receive port).
 
 ### Example QLab cue script (for bulk creation)
 
@@ -154,7 +175,7 @@ oscsend localhost 8001 /brbingo/number i 7
 | `GET` | `/api/state` | Current game state (numbers, last called, session info) |
 | `GET` | `/api/diagnostics` | OSC status, connected clients, uptime |
 | `GET` | `/api/logs?range=today\|7d\|30d` | Filtered log entries |
-| `GET` | `/api/logs/export?range=...&format=csv\|json` | Download logs as file |
+| `GET` | `/api/logs/export?range=...` | Download logs as CSV |
 | `POST` | `/api/session/reset` | Start new session (preserves history) |
 | `POST` | `/api/call/:number` | Manually call a number (for testing) |
 
@@ -177,8 +198,10 @@ Connect to `ws://<host>:<port>/ws`
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `PORT` | `3000` | HTTP/WS server port |
-| `OSC_PORT` | `8001` | UDP port for OSC messages |
+| `OSC_PORT` | `8001` | UDP port for inbound OSC from QLab |
 | `OSC_INTERFACE` | `0.0.0.0` | OSC bind address |
+| `QLAB_HOST` | `127.0.0.1` | IP of the QLab machine (scoreboard target) |
+| `QLAB_OSC_PORT` | `53000` | QLab OSC receive port |
 | `DATA_DIR` | `./data` | SQLite database location |
 
 ---
