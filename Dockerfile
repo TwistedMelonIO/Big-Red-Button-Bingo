@@ -14,6 +14,9 @@ RUN npm run build
 # ============================================
 FROM node:20-alpine AS server-build
 
+# Install build dependencies for native modules
+RUN apk add --no-cache python3 make g++
+
 WORKDIR /app/server
 COPY server/package.json server/package-lock.json* ./
 RUN npm ci
@@ -24,6 +27,10 @@ RUN npm run build
 # Stage 3: Production image
 # ============================================
 FROM node:20-alpine AS production
+
+# Install build dependencies for native modules and clean up afterwards
+RUN apk add --no-cache python3 make g++ && \
+    apk add --no-cache sqlite
 
 WORKDIR /app
 

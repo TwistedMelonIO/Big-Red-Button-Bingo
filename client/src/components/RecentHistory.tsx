@@ -10,14 +10,14 @@ export function RecentHistory({ history, max = 10 }: RecentHistoryProps) {
 
   return (
     <div className="flex flex-col gap-2">
-      <span className="text-xs font-mono uppercase tracking-[0.25em] text-brb-text-muted">
+      <span className="text-[11px] font-mono uppercase tracking-[0.3em] text-brb-red">
         Recent
       </span>
 
       <div className="flex flex-col gap-1.5 min-h-[120px]">
         <AnimatePresence initial={false}>
           {recent.length === 0 ? (
-            <span className="text-sm text-brb-text-muted italic">No numbers called</span>
+            <span className="text-sm text-brb-text-muted italic font-body">No numbers called</span>
           ) : (
             recent.map((num, idx) => (
               <motion.div
@@ -27,17 +27,17 @@ export function RecentHistory({ history, max = 10 }: RecentHistoryProps) {
                 exit={{ opacity: 0, x: 20, height: 0 }}
                 transition={{ duration: 0.25 }}
                 className={`
-                  flex items-center gap-3 px-3 py-1.5 rounded-md font-mono text-sm
+                  flex items-center gap-3 px-3 py-1.5 rounded-md text-sm
                   ${idx === 0
-                    ? 'bg-brb-red/20 text-brb-red border border-brb-red/30 font-bold'
-                    : 'bg-brb-card/50 text-brb-text-dim border border-transparent'
+                    ? 'bg-brb-red/15 text-brb-red-glow border border-brb-red/30'
+                    : 'bg-brb-card/40 text-brb-text-dim border border-transparent'
                   }
                 `}
               >
-                <span className="w-5 text-right text-brb-text-muted text-xs">
+                <span className="w-5 text-right text-brb-text-muted text-xs font-mono">
                   {idx + 1}.
                 </span>
-                <span className="font-display font-bold text-base">
+                <span className={`font-display text-lg tracking-wide ${idx === 0 ? 'text-xl' : ''}`}>
                   {num}
                 </span>
               </motion.div>

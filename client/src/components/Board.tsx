@@ -15,12 +15,11 @@ export function Board({ numbers, lastCalled }: BoardProps) {
 
   return (
     <div className="space-y-1.5 sm:space-y-2">
-      {/* Row labels */}
       {rows.map((row, rowIdx) => (
         <div key={rowIdx} className="flex items-center gap-1.5 sm:gap-2">
           {/* Row range label */}
           <div className="hidden sm:flex w-14 shrink-0 items-center justify-end pr-2">
-            <span className="text-xs font-mono text-brb-text-muted tracking-tight">
+            <span className="text-[11px] font-mono text-brb-text-muted tracking-tight">
               {rowIdx * 10 + 1}–{rowIdx * 10 + 10}
             </span>
           </div>

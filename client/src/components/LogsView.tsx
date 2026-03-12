@@ -56,20 +56,20 @@ export function LogsView({ onClose }: LogsViewProps) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 bg-brb-bg/95 backdrop-blur-sm overflow-y-auto"
+      className="fixed inset-0 z-50 bg-brb-bg/95 backdrop-blur-md overflow-y-auto"
     >
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 space-y-6">
+      <div className="max-w-5xl mx-auto px-5 sm:px-8 py-8 space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
-          <h2 className="font-display text-xl font-bold text-brb-text tracking-tight">
-            Settings & Logs
+          <h2 className="font-display text-3xl text-brb-text tracking-wider">
+            SETTINGS & LOGS
           </h2>
           <button
             onClick={onClose}
             className="px-4 py-2 rounded-lg bg-brb-card border border-brb-border text-brb-text-dim
                        hover:bg-brb-border hover:text-brb-text transition-all text-sm font-mono"
           >
-            ← Back to Board
+            Back to Board
           </button>
         </div>
 
@@ -83,9 +83,9 @@ export function LogsView({ onClose }: LogsViewProps) {
                   key={opt.value}
                   onClick={() => setRange(opt.value)}
                   className={`
-                    px-3 py-1.5 rounded-lg text-sm font-mono transition-all
+                    px-4 py-2 rounded-lg text-sm font-mono transition-all duration-200
                     ${range === opt.value
-                      ? 'bg-brb-red text-white'
+                      ? 'bg-brb-red text-white shadow-lg shadow-brb-red/20'
                       : 'bg-brb-card text-brb-text-dim border border-brb-border hover:border-brb-border-bright'
                     }
                   `}
@@ -96,10 +96,9 @@ export function LogsView({ onClose }: LogsViewProps) {
 
               <div className="flex-1" />
 
-              {/* Export button */}
               <button
                 onClick={handleExport}
-                className="px-3 py-1.5 rounded-lg text-sm font-mono bg-brb-card text-brb-text-dim
+                className="px-4 py-2 rounded-lg text-sm font-mono bg-brb-card text-brb-text-dim
                            border border-brb-border hover:border-brb-gold hover:text-brb-gold transition-all"
               >
                 Export CSV
@@ -108,12 +107,12 @@ export function LogsView({ onClose }: LogsViewProps) {
 
             {/* Log table */}
             <div className="bg-brb-surface rounded-xl border border-brb-border overflow-hidden">
-              <div className="grid grid-cols-[60px_80px_1fr_120px] gap-2 px-4 py-2.5
+              <div className="grid grid-cols-[60px_80px_1fr_120px] gap-2 px-5 py-3
                               text-xs font-mono uppercase tracking-wider text-brb-text-muted
                               border-b border-brb-border bg-brb-card/50">
                 <span>#</span>
                 <span>Number</span>
-                <span>Session</span>
+                <span>Game</span>
                 <span>Time</span>
               </div>
 
@@ -130,18 +129,18 @@ export function LogsView({ onClose }: LogsViewProps) {
                   logs.map((entry) => (
                     <div
                       key={entry.id}
-                      className="grid grid-cols-[60px_80px_1fr_120px] gap-2 px-4 py-2
-                                 text-sm font-mono border-b border-brb-border/50
-                                 hover:bg-brb-card/30 transition-colors"
+                      className="grid grid-cols-[60px_80px_1fr_120px] gap-2 px-5 py-2.5
+                                 text-sm border-b border-brb-border/40
+                                 hover:bg-brb-red-deep/20 transition-colors"
                     >
-                      <span className="text-brb-text-muted">{entry.id}</span>
-                      <span className="font-display font-bold text-brb-red">
+                      <span className="font-mono text-brb-text-muted">{entry.id}</span>
+                      <span className="font-display text-lg text-brb-red tracking-wide">
                         {entry.number}
                       </span>
-                      <span className="text-brb-text-muted truncate text-xs">
-                        {entry.session_id.slice(0, 8)}…
+                      <span className="font-mono text-brb-text-muted truncate text-xs">
+                        Game {entry.game_number}
                       </span>
-                      <span className="text-brb-text-dim text-xs">
+                      <span className="font-mono text-brb-text-dim text-xs">
                         {new Date(entry.timestamp).toLocaleString([], {
                           month: 'short',
                           day: 'numeric',
@@ -156,7 +155,7 @@ export function LogsView({ onClose }: LogsViewProps) {
               </div>
 
               {/* Footer */}
-              <div className="px-4 py-2 border-t border-brb-border bg-brb-card/30
+              <div className="px-5 py-2.5 border-t border-brb-border bg-brb-card/30
                               text-xs font-mono text-brb-text-muted">
                 {logs.length} entries
               </div>
@@ -166,8 +165,8 @@ export function LogsView({ onClose }: LogsViewProps) {
           {/* Right column: Controls + Diagnostics */}
           <div className="space-y-4">
             {/* Session controls */}
-            <div className="p-4 bg-brb-surface rounded-xl border border-brb-border space-y-3">
-              <h3 className="text-xs font-mono uppercase tracking-[0.25em] text-brb-text-muted">
+            <div className="p-5 bg-brb-surface rounded-xl border border-brb-border space-y-4">
+              <h3 className="text-[11px] font-mono uppercase tracking-[0.3em] text-brb-red">
                 Session Controls
               </h3>
 
@@ -175,14 +174,14 @@ export function LogsView({ onClose }: LogsViewProps) {
                 <button
                   onClick={() => setShowResetConfirm(true)}
                   className="w-full px-4 py-3 rounded-lg text-sm font-mono font-bold
-                             bg-brb-red/10 text-brb-red border border-brb-red/30
-                             hover:bg-brb-red/20 hover:border-brb-red/50 transition-all"
+                             bg-brb-red-deep/50 text-brb-red border border-brb-red/30
+                             hover:bg-brb-red-deep hover:border-brb-red/50 transition-all"
                 >
                   New Session / Clear Board
                 </button>
               ) : (
-                <div className="space-y-2">
-                  <p className="text-sm text-brb-gold">
+                <div className="space-y-3">
+                  <p className="text-sm text-brb-gold font-body">
                     Are you sure? This will clear the board and start a new session.
                     History is preserved in logs.
                   </p>
@@ -190,7 +189,8 @@ export function LogsView({ onClose }: LogsViewProps) {
                     <button
                       onClick={handleReset}
                       className="flex-1 px-4 py-2.5 rounded-lg text-sm font-mono font-bold
-                                 bg-brb-red text-white hover:bg-brb-red-glow transition-all"
+                                 bg-brb-red text-white hover:bg-brb-red-glow transition-all
+                                 shadow-lg shadow-brb-red/20"
                     >
                       Confirm Reset
                     </button>

@@ -35,9 +35,9 @@ router.get('/api/logs/export', (req: Request, res: Response) => {
   res.setHeader('Content-Disposition', 'attachment; filename=bingo-logs.csv');
   res.setHeader('Content-Type', 'text/csv');
 
-  const header = 'id,session_id,number,timestamp,source\n';
+  const header = 'id,game,session_id,number,timestamp,source\n';
   const rows = logs
-    .map((l) => `${l.id},"${l.session_id}",${l.number},"${l.timestamp}","${l.source}"`)
+    .map((l) => `${l.id},"Game ${l.game_number}","${l.session_id}",${l.number},"${l.timestamp}","${l.source}"`)
     .join('\n');
   res.send(header + rows);
 });
@@ -52,7 +52,7 @@ router.post('/api/session/reset', (_req: Request, res: Response) => {
 
 // Manual number call (for testing / manual override)
 router.post('/api/call/:number', (req: Request, res: Response) => {
-  const num = parseInt(req.params.number, 10);
+  const num = parseInt(Array.isArray(req.params.number) ? req.params.number[0] : req.params.number, 10);
   const result = callNumber(num, 'manual');
   if (result.success && result.logEntry) {
     broadcastNumberCalled(num, result.logEntry);

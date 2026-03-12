@@ -1,10 +1,12 @@
-import { Server as OscServer, Client as OscClient } from 'node-osc';
+// @ts-expect-error - node-osc doesn't have TypeScript declarations
+import * as OscModule from 'node-osc';
+const { Server: OscServer, Client: OscClient } = OscModule as any;
 import { config } from './config.js';
-import { callNumber, getState } from './state.js';
-import { broadcastNumberCalled } from './ws.js';
+import { callNumber, resetSession, getState } from './state.js';
+import { broadcastNumberCalled, broadcastSessionReset } from './ws.js';
 
-let oscServer: OscServer | null = null;
-let oscClient: OscClient | null = null;
+let oscServer: any = null;
+let oscClient: any = null;
 let lastMessageAt: string | null = null;
 let lastScoreboardSentAt: string | null = null;
 let listening = false;
@@ -34,6 +36,11 @@ export function initOsc(): void {
         } else {
           console.warn(`[OSC] Rejected: ${result.error}`);
         }
+      } else if (address === '/brbingo/reset') {
+        const newState = resetSession();
+        broadcastSessionReset(newState);
+        clearScoreboard();
+        console.log('[OSC] Session reset via OSC');
       } else {
         console.warn(`[OSC] Unknown address: ${address}`);
       }

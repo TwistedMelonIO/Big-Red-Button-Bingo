@@ -6,6 +6,7 @@ export interface NumberState {
 
 export interface GameState {
   sessionId: string;
+  gameNumber: number;
   sessionStartedAt: string;
   numbers: NumberState[];
   lastCalled: number | null;
@@ -16,6 +17,7 @@ export interface GameState {
 export interface LogEntry {
   id: number;
   session_id: string;
+  game_number: number;
   number: number;
   timestamp: string;
   source: string;

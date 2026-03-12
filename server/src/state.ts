@@ -9,6 +9,7 @@ export interface NumberState {
 
 export interface GameState {
   sessionId: string;
+  gameNumber: number;
   sessionStartedAt: string;
   numbers: NumberState[];
   lastCalled: number | null;
@@ -21,10 +22,11 @@ let state: GameState;
 export function initState(): GameState {
   const sessionId = uuidv4();
   const now = new Date().toISOString();
-  createSession(sessionId);
+  const session = createSession(sessionId);
 
   state = {
     sessionId,
+    gameNumber: session.game_number,
     sessionStartedAt: now,
     numbers: Array.from({ length: 90 }, (_, i) => ({
       number: i + 1,
@@ -67,7 +69,7 @@ export function callNumber(num: number, source: string = 'qlab-osc'): CallResult
   state.calledCount++;
   state.history.unshift(num);
 
-  const logEntry = insertLog(state.sessionId, num, source);
+  const logEntry = insertLog(state.sessionId, num, source, state.gameNumber);
 
   return { success: true, number: num, logEntry };
 }
